@@ -1,6 +1,6 @@
 {
   "name": "@sctg/code-stats",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Count line of codes and display stats",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -38,7 +38,6 @@
   "author": "Ronan LE MEILLAT",
   "license": "MIT",
   "dependencies": {
-    "-": "^0.0.1",
     "mime": "^3.0.0"
   }
 }
