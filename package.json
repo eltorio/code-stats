@@ -1,6 +1,6 @@
 {
   "name": "@sctg/code-stats",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Count line of codes and display stats",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -9,6 +9,7 @@
   "scripts": {
     "licenses": "gulp licenses",
     "licensesSrc": "gulp licensesSrc",
+    "prepublish": "npm run build",
     "test": "mocha -n loader=ts-node/esm --extension ts",
     "build": "tsc"
   },
