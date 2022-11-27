@@ -17,6 +17,18 @@ LineCount.countLines("src").then((results: GlobalResults) => {
     }
     LineCount.countLinesCb("src",onComplete);
 ```
+```ts
+    const onComplete = (count:GlobalResults)=>{
+        console.log(count)
+    }
+    LineCount.countLinesCb(["dirA","dirB"],onComplete);
+```
+```ts
+    const onComplete = (count:GlobalResults)=>{
+        console.log(count)
+    }
+    LineCount.countLinesCb(["dirA","dirB"],onComplete);
+```
 
 ## license
 Without any form of… Provide as-is… 

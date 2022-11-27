@@ -15,22 +15,31 @@ const debug = (value: any) => {
   }
 };
 
-function walkRepo(path: fs.PathLike, onFile: (path: string) => void) {
-  if (fs.existsSync(path)) {
-    fs.readdirSync(path).forEach((file, index) => {
-      if (file.indexOf(".git") != 0) {
-        // skip git-related files and dirs
-        const curPath = `${path}/${file}`;
-        if (fs.statSync(curPath).isDirectory()) {
-          // recurse
-          walkRepo(curPath, onFile);
-        } else {
-          // process file and update accumulated result
-          onFile(curPath);
-        }
-      }
-    });
+function walkRepo(path: string | string[], onFile: (path: string) => void) {
+  let dirs: string[] = [];
+  if (typeof path === "string") {
+    dirs.push(path);
+  } else {
+    dirs = path
   }
+  
+  dirs.forEach((_path) => {
+    if (fs.existsSync(_path)) {
+      fs.readdirSync(_path).forEach((file, index) => {
+        if (file.indexOf(".git") != 0) {
+          // skip git-related files and dirs
+          const curPath = `${_path}/${file}`;
+          if (fs.statSync(curPath).isDirectory()) {
+            // recurse
+            walkRepo(curPath, onFile);
+          } else {
+            // process file and update accumulated result
+            onFile(curPath);
+          }
+        }
+      });
+    }
+  });
 }
 
 function addResult(acc: GlobalResults, newResult: SingleResult) {
@@ -59,7 +68,7 @@ function getFilename(path: string) {
 }
 
 function countLines(
-  rootDir: string,
+  rootDir: string|string[],
   onComplete: (results: GlobalResults) => void
 ) {
   debug("Counting lines...");
@@ -90,23 +99,23 @@ function countLines(
 export const LineCount = {
   /**
    *
-   * @param rootDir base directory to scan
+   * @param rootDir base directory to scan can be a single string or an array of string
    * @param onComplete callback when finished
    * @returns
    */
   countLinesCb: function (
-    rootDir: string,
+    rootDir: string|string[],
     onComplete: (value: GlobalResults) => void
   ) {
     return countLines(rootDir, onComplete);
   },
-  
+
   /**
-   * 
-   * @param rootDir base directory to scan
+   *
+   * @param rootDir base directory to scan can be a single string or an array of string
    * @returns a Promise with the GlobalResults
    */
-  countLines: function (rootDir: string): Promise<GlobalResults> {
+  countLines: function (rootDir: string|string[]): Promise<GlobalResults> {
     return new Promise<GlobalResults>((resolve) => {
       const _cb = (results: GlobalResults) => {
         resolve(results);
